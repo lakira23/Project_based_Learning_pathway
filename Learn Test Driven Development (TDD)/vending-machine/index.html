@@ -20,12 +20,24 @@
   <script>
     function getChange(totalPayable, CashPaid) {
       var change = [];
+      var difference = totalPayable - CashPaid;
+      var coins = [200, 100, 50, 20, 10, 5, 2, 1];
 
-      if (CashPaid - totalPayable != 0) { //if the till dude needs to act and give change
-        change = [50, 20, 10, 5];
+      if (difference < 0) {
+        //reason to give change
+
+        difference = difference * -1; //positive
+
+        for (var i = 0; i < coins.length; i++){
+          while (difference - coins[i]>= 0){
+            difference = difference - coins[i];
+            change.push(coins[i]);
+          }
+        }
       }
 
-      return change
+      return change;
+      
     };
   </script>
 
@@ -40,6 +52,12 @@
       var result = getChange(215, 300); // expect an array containing [50,20,10,5]
       var expected = [50, 20, 10, 5];
       assert.deepEqual(result, expected);
+    });
+
+    test('getChange(486, 600) should return [100,10,2,2]', function (assert) {
+      var result = getChange(486, 600);
+      var expected = [100,10,2,2];
+      assert.deepEqual(result,expected);
     })
 
   </script>
